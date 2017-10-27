@@ -9,6 +9,7 @@ var targetX = 0;
 var targetY = 0;
 var curIndex = 0;
 var targetIndex = 1;
+var interacting = false;
 
 function setup() { 
   main_canvas = createCanvas(window.innerWidth, window.innerHeight);
@@ -16,6 +17,7 @@ function setup() {
   
   ellipseMode(CENTER);
   rectMode(CENTER);
+  imageMode(CENTER);
 
   createEvents();
   
@@ -67,6 +69,7 @@ function draw() {
   endShape();
   pop();
   
+  interacting = false;
   for (var i = 0; i < eventBoxes.length; i++) {
     
     eventBoxes[i].update();
@@ -80,6 +83,7 @@ function draw() {
     }
     
     if (eventBoxes[i].hovered) {
+		interacting = true;
       eventBoxes[i].sz = eventBoxes[i].initSz + 12;
     }
     
@@ -102,7 +106,7 @@ function mousePressed() {
 		}
       targetX = eventBoxes[(i+1)%(eventBoxes.length)].x - width/2.0;
       targetY = eventBoxes[(i+1)%(eventBoxes.length)].y - height/2.0;
-      transMax = 6;
+      transMax = 5;
       // for (var h = 0; h < 25; h++) {
 //         //append(parts, new Particle(ex, ey, random(5,13), random(2,13), color(255,213,12)));
 //         append(parts, new Particle(eventBoxes[(i+1)%(eventBoxes.length)].x, eventBoxes[(i+1)%(eventBoxes.length)].y, random(5,transMax*2), random(2,transMax*2), color(225,153,0)));
@@ -214,12 +218,17 @@ function Particle(xpos, ypos, maxVel, radius, col) {
         strokeWeight(2);
       }
       ellipse(0,0,this.rad,this.rad);
-	  image(this.fbImg, 0, 0, this.rad*4, this.rad*4);
+	  image(this.fbImg, 0, 0, this.rad*5, this.rad*5);
       pop();
     }
   }
   
   this.update = function() {
+	  if (interacting) {
+		  this.fillCol = color(225,153,0);
+	  } else {
+		  this.fillCol = color(112,201,255);
+	  }
     this.x += this.vel.x;
     this.y += this.vel.y;
 	this.ang += this.angVel;
