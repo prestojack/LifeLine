@@ -214,7 +214,7 @@ function Particle(xpos, ypos, maxVel, radius, col) {
         strokeWeight(2);
       }
       ellipse(0,0,this.rad,this.rad);
-	  image(this.fbImg, 0, 0, this.rad*2.5, this.rad*2.5);
+	  image(this.fbImg, 0, 0, this.rad*4, this.rad*4);
       pop();
     }
   }
@@ -223,6 +223,7 @@ function Particle(xpos, ypos, maxVel, radius, col) {
     this.x += this.vel.x;
     this.y += this.vel.y;
 	this.ang += this.angVel;
+	this.rad *= 0.99;
     this.vel.mult(0.98);
   }
 }
