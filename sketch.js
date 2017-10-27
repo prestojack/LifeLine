@@ -1,5 +1,5 @@
-var canvasWidth = 960;
-var canvasHeight = 500;
+var canvasWidth = screen.width;
+var canvasHeight = screen.height;
 var transMax = 0;
 var parts = [];
 var eventBoxes = [];
