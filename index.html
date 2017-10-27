@@ -8,18 +8,6 @@
     <style>
         body   { padding: 0; margin: 0; }
         .inner { position: absolute; }
-        #controls {
-            font: 300 12px "Helvetica Neue";
-            padding: 5;
-            margin: 5;
-            background: #f0f0f0;
-            opacity: 0.0;
-            -webkit-transition: opacity 0.2s ease;
-            -moz-transition: opacity 0.2s ease;
-            -o-transition: opacity 0.2s ease;
-            -ms-transition: opacity 0.2s ease;
-        }
-        #controls:hover { opacity: 0.9; }
     </style>
 
 </head>
@@ -52,15 +40,7 @@
 	<!---<button onclick="myFacebookLogin()">Login with Facebook</button>-->
     <div class="outer">
         <div class="inner">
-            <div id="canvasContainer"></div>
-        </div>
-        <div class="inner" id="controls" height="500px">
-            <table>
-                <tr>
-                    <td>(future interface here)</td>
-                    <td id="selector1Container"></td>
-                </tr>
-            </table>
+            <div id="canvasContainer"><button onclick="myFacebookLogin()">Login with Facebook</button></div>
         </div>
     </div>
 </table>
