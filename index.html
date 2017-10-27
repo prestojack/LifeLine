@@ -1,0 +1,67 @@
+<head>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/p5.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.11/addons/p5.dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/2.4.0/seedrandom.min.js"></script>
+    <script src="https://d3js.org/d3-random.v1.min.js"></script>
+    <script language="javascript" type="text/javascript" src="sketch.js"></script>
+
+    <style>
+        body   { padding: 0; margin: 0; }
+        .inner { position: absolute; }
+        #controls {
+            font: 300 12px "Helvetica Neue";
+            padding: 5;
+            margin: 5;
+            background: #f0f0f0;
+            opacity: 0.0;
+            -webkit-transition: opacity 0.2s ease;
+            -moz-transition: opacity 0.2s ease;
+            -o-transition: opacity 0.2s ease;
+            -ms-transition: opacity 0.2s ease;
+        }
+        #controls:hover { opacity: 0.9; }
+    </style>
+
+</head>
+<body style="background-color:white">
+	<script>
+	  window.fbAsyncInit = function() {
+	    FB.init({
+	      appId            : '1740533066019133',
+	      autoLogAppEvents : true,
+	      xfbml            : true,
+	      version          : 'v2.10'
+	    });
+	    FB.AppEvents.logPageView();
+	  };
+
+	  (function(d, s, id){
+	     var js, fjs = d.getElementsByTagName(s)[0];
+	     if (d.getElementById(id)) {return;}
+	     js = d.createElement(s); js.id = id;
+	     js.src = "https://connect.facebook.net/en_US/sdk.js";
+	     fjs.parentNode.insertBefore(js, fjs);
+	   }(document, 'script', 'facebook-jssdk'));
+	</script>
+	<script>
+	// Only works after `FB.init` is called
+	function myFacebookLogin() {
+	  FB.login(function(){}, {scope: 'publish_actions'});
+	}
+	</script>
+	<button onclick="myFacebookLogin()">Login with Facebook</button>
+    <div class="outer">
+        <div class="inner">
+            <div id="canvasContainer"></div>
+        </div>
+        <div class="inner" id="controls" height="500px">
+            <table>
+                <tr>
+                    <td>(future interface here)</td>
+                    <td id="selector1Container"></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</table>
+</body>
