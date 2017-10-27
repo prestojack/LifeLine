@@ -1,85 +1,171 @@
-var canvasWidth = 960;
-var canvasHeight = 500;
-var cubeArray = [];
-var numCubesX = 19;
-var numCubesY = 19;
+var transMax = 0;
+var parts = [];
+var eventBoxes = [];
+var traverseX = 0;
+var traverseY = 0;
+var targetX = 0;
+var targetY = 0;
+var curIndex = 0;
 
-var planeWd = 300;
-var planeHt = 0;
-
-function setup () {
-  // create the drawing canvas, save the canvas element
-  main_canvas = createCanvas(canvasWidth, canvasHeight);
-
-  // position each element on the page
-  main_canvas.parent('canvasContainer');
-  for (var i = -numCubesX; i <= numCubesX; i++) {
-  	for (var j = -numCubesY; j <= numCubesY; j++) {
-  		var testCube;
-	  	testCube = new cubeSection(i*16,j*16,5,5,color(0,50,200),color(20,255,100),color(200,255,100), i, j);
-	  	append(cubeArray, testCube);
-	}
-  }
+function setup() { 
+  createCanvas(780, 520);
+  
+  ellipseMode(CENTER);
   rectMode(CENTER);
+
+  createEvents();
+  
+  targetX = eventBoxes[0].x - width/2.0;
+  targetY = eventBoxes[0].y - height/2.0;
+} 
+
+function createEvents() {
+  var numEvents = Math.floor(random(2,12));
+  for (var i = 0; i < numEvents; i++) {
+    append(eventBoxes, new LifeEventBox(random(0,300), random(-width*2,width*2), random(-height*2,height*2), "10/12/1998", "Born"));
+  }
 }
 
-function draw () {
-  background(color(245,240,240));
-  push();
-  	translate(canvasWidth/2.0, canvasHeight/2.0);
-	  rotate(-PI/2800.0*frameCount);
-	  scale(1-(frameCount*0.001));
-	  push();
-			  
-			  beginShape();
-			  noStroke();
-			  fill(cubeArray[0].darkCol);
-			  rect(0,0,300,300);
-			  endShape(CLOSE)
-	  pop();
-	  for (var i = 0; i < cubeArray.length; i++) {
-	  	push();
-	  	rotate(cubeArray[i].v2 * PI/9000.0*frameCount*map(mouseX,0,width,0,5));
-	  	cubeArray[i].drawCube();
-	  	pop();
-	  }
-	  
-		  
-
-  pop();
-}
-
-function cubeSection (xpos, ypos, widt, hght, col1, col2, col3, val1, val2) {
-	this.wd = widt;
-	this.ht = hght;
-	this.x = xpos;
-	this.y = ypos;
-	this.v1 = val1;
-	this.v2 = val2;
-	this.darkCol = col1;
-	this.midCol = col2;
-	this.lightCol = col3;
+function draw() { 
 	
-	this.drawCube = function() {
-		var fillCol = lerpColor(this.lightCol, this.midCol, map(abs(this.v1*this.v2), 0,41,0,1));
-		push();
-		noStroke();
-		translate(this.x, this.y);
-		rotate(this.v1*this.v2*PI/1800.0*frameCount)
-		scale(1+(frameCount*0.0005));
-		fill(fillCol);
-		rect(0,0,this.wd,this.ht);
-		pop();
-	}
+  background(48,40,40);
+	
+  fill(255);
+  text(eventBoxes.length, width-40,20);
+  
+  translate(traverseX, traverseY);
+  
+  translate(random(-transMax, transMax), random(-transMax, transMax));
+  transMax*= 0.94;
+  
+  for (var j = 0; j < parts.length; j++) {
+    parts[j].display();
+    parts[j].update();
+  }
+  
+  for (var i = 0; i < eventBoxes.length; i++) {
+    
+    eventBoxes[i].update();
+    
+    if (i < eventBoxes.length - 1) {
+      push();
+      translate(-traverseX*2, -traverseY*2);
+      stroke(255);
+      line(eventBoxes[i].x, eventBoxes[i].y, eventBoxes[i+1].x, eventBoxes[i+1].y);
+      pop();
+    }
+    
+    if(eventBoxes[i].hovered) {
+      eventBoxes[i].sz = eventBoxes[i].initSz + 12;
+    }
+    
+    eventBoxes[i].display();
+    
+  }
+  
+  traverseX += (targetX - traverseX)/18.0;
+  traverseY += (targetY - traverseY)/18.0;
 }
 
 function mousePressed() {
-	var newCol1 = color(random(160), random(160), random(160))
-	var newCol2 = color(random(50,200), random(50,200), random(50,200))
-	var newCol3 = color(random(170,255), random(170,255), random(170,255))
-	for (var i = 0; i < cubeArray.length; i++) {
-	  cubeArray[i].darkCol = newCol1;
-	  cubeArray[i].midCol = newCol2;
-	  cubeArray[i].lightCol = newCol3;
-	}
+  for (var i = 0; i < eventBoxes.length; i++) {
+    if(eventBoxes[i].hovered) {
+      curIndex = i;
+      targetX = eventBoxes[(i+1)%(eventBoxes.length)].x - width/2.0;
+      targetY = eventBoxes[(i+1)%(eventBoxes.length)].y - height/2.0;
+      transMax = 8;
+      for (var h = 0; h < 25; h++) {
+        //append(parts, new Particle(ex, ey, random(5,13), random(2,13), color(255,213,12)));
+        //append(parts, new Particle(eventBoxes[i].x, eventBoxes[i].y, random(5,transMax*2), random(2,transMax*2), color(225,153,0)));
+      }
+    }
+  }
+}
+
+function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
+  this.sz = map(min(numLikes,200), 0, 200, 30, 200);
+  this.initSz = this.sz;
+  this.x = xpos;
+  this.y = ypos;
+  this.creation = datetime;
+  this.desc = description;
+  this.hovered = false;
+  
+  this.display = function() {
+    
+    push();
+    
+    translate(this.x, this.y);
+    
+    noStroke();
+    
+    if (this.hovered) {
+      fill(225,173,12);
+    } else {
+    	fill(112,201,255);
+    }
+    
+    translate(-traverseX*2, -traverseY*2);
+    
+    rect(0,0, this.sz, this.sz,5);
+    fill(255);
+    textAlign(CENTER, CENTER);
+    text(this.desc, 0, -10);
+    text(this.creation, 0, 10);
+    pop();
+  }
+  
+  this.update = function() {
+    if (this.interact()) {
+      this.hovered = true;
+    } else {
+      this.hovered = false;
+    }
+    if (this.sz > this.initSz) {
+      this.sz *= 0.98;
+    }
+  }
+  
+  this.interact = function() {
+    if(mouseX > this.x - (traverseX) - (this.sz/2.0) && mouseX < this.x - (traverseX) + (this.sz/2.0) && 
+      mouseY > this.y - (traverseY) - (this.sz/2.0) && mouseY < this.y - (traverseY) + (this.sz/2.0)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+
+function Particle(xpos, ypos, maxVel, radius, col) {
+  this.x = xpos;
+  this.y = ypos;
+  this.rad = radius;
+  this.mxV = maxVel;
+  this.fillCol = col;
+  this.vel = createVector(random(-this.mxV, this.mxV), random(-this.mxV, this.mxV));
+  
+  this.rCheck = random(1);
+  
+  this.display = function() {
+    if(this.vel.mag() > 1.3) {
+      push();
+      translate(this.x, this.y);
+      if (this.rCheck > 0.2) {
+        noStroke();
+        fill(this.fillCol);
+      } else {
+        noFill();
+        stroke(this.fillCol);
+        strokeWeight(2);
+      }
+      ellipse(-traverseX*2,-traverseY*2,this.rad,this.rad);
+      pop();
+    }
+  }
+  
+  this.update = function() {
+    this.x += this.vel.x;
+    this.y += this.vel.y;
+    this.vel.mult(0.98);
+  }
 }
