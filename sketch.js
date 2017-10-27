@@ -50,7 +50,7 @@ function draw() {
   translate(random(-transMax, transMax), random(-transMax, transMax));
   transMax*= 0.94;
   
-  ellipse(width/2.0, height/2.0, 9,9);
+  
   
   translate(traverseX, traverseY);
   
@@ -63,7 +63,8 @@ function draw() {
   beginShape();
 	
   noFill();
-  stroke(255);
+  stroke(200);
+  strokeWeight(2);
 
   vertex(eventBoxes[curIndex].x- (traverseX*2), eventBoxes[curIndex].y- (traverseY*2));
   vertex((width/2.0)-traverseX, (height/2.0)-traverseY);
@@ -71,6 +72,8 @@ function draw() {
   
   endShape();
   pop();
+  
+  ellipse(width/2.0-traverseX, height/2.0-traverseY, 11,11);
   
   interacting = false;
   for (var i = 0; i < eventBoxes.length; i++) {
