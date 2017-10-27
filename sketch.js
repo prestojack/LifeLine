@@ -1,5 +1,5 @@
-var canvasWidth = screen.width;
-var canvasHeight = screen.height;
+var canvasWidth = window.innerWidth;
+var canvasHeight = window.innerHeight;
 var transMax = 0;
 var parts = [];
 var eventBoxes = [];
@@ -10,7 +10,7 @@ var targetY = 0;
 var curIndex = 0;
 
 function setup() { 
-  main_canvas = createCanvas(canvasWidth, canvasHeight);
+  main_canvas = createCanvas(window.innerWidth, window.innerHeight);
   main_canvas.parent('canvasContainer');
   
   ellipseMode(CENTER);
