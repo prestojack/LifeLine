@@ -10,6 +10,7 @@ var targetY = 0;
 var curIndex = 0;
 var targetIndex = 1;
 var interacting = false;
+var fbImg;
 
 function setup() { 
   main_canvas = createCanvas(window.innerWidth, window.innerHeight);
@@ -18,6 +19,8 @@ function setup() {
   ellipseMode(CENTER);
   rectMode(CENTER);
   imageMode(CENTER);
+
+	fbImg = loadImage("facebookThumb.png");
 
   createEvents();
   
@@ -201,7 +204,6 @@ function Particle(xpos, ypos, maxVel, radius, col) {
   this.ang = random(0, TWO_PI);
   this.angVel = random(-PI/20.0, PI/20.0);
   this.rCheck = random(1);
-  this.fbImg = loadImage("facebookThumb.png");
   
   this.display = function() {
     if(this.vel.mag() > 1.3) {
@@ -217,8 +219,8 @@ function Particle(xpos, ypos, maxVel, radius, col) {
         stroke(this.fillCol);
         strokeWeight(2);
       }
-      ellipse(0,0,this.rad,this.rad);
-	  image(this.fbImg, 0, 0, this.rad*5, this.rad*5);
+      ellipse(0,0,this.rad*6,this.rad*6);
+	  image(fbImg, 0, 0, this.rad*5, this.rad*5);
       pop();
     }
   }
