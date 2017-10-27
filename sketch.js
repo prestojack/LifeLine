@@ -195,7 +195,7 @@ function Particle(xpos, ypos, maxVel, radius, col) {
   this.fillCol = col;
   this.vel = createVector(random(-this.mxV, this.mxV), random(-this.mxV, this.mxV));
   this.ang = random(0, TWO_PI);
-  this.angVel = random(-PI/30.0, PI/30.0);
+  this.angVel = random(-PI/20.0, PI/20.0);
   this.rCheck = random(1);
   this.fbImg = loadImage("facebookThumb.png");
   
@@ -214,7 +214,7 @@ function Particle(xpos, ypos, maxVel, radius, col) {
         strokeWeight(2);
       }
       ellipse(0,0,this.rad,this.rad);
-	  image(this.fbImg, 0, 0);
+	  image(this.fbImg, 0, 0, this.rad, this.rad);
       pop();
     }
   }
