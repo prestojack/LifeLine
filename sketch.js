@@ -158,7 +158,11 @@ function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
 	textSize(min(map(this.sz,30,140,8,18),18));
 	text(this.creation, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) - min(map(this.sz,30,120,5,10),10));
 	textAlign(LEFT, TOP);
-	fill(128,128,136);
+    if (this.hovered) {
+      fill(112,201,255);
+    } else {
+		fill(225,173,12);
+    }
 	text(this.l, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) + min(map(this.sz,30,120,3,8),8));
     pop();
   }
