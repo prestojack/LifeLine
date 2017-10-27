@@ -29,6 +29,10 @@ function createEvents() {
   }
 }
 
+function changeCanvas() {
+	main_canvas = createCanvas(window.innerWidth, window.innerHeight);
+}
+
 function draw() { 
 	
   background(48,40,40);
