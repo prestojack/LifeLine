@@ -119,7 +119,8 @@ function mousePressed() {
 }
 
 function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
-  this.sz = map(min(numLikes,200), 0, 200, 30, 200);
+  this.sz = map(min(numLikes,200), 0, 200, 60, 200);
+  this.l = Math.floor(numLikes) + " likes";
   this.initSz = this.sz;
   this.x = xpos;
   this.y = ypos;
@@ -150,11 +151,15 @@ function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
 	scale(this.sc);
     rect(0,0, this.sz, this.sz,5);
 	pop();
-    fill(255);
-	textAlign(CENTER, TOP);
-	textSize(30);
-	text(this.desc, 0, (this.sz/2.0) + 5);
-	text(this.creation, 0, (this.sz/2.0) + 45);
+    fill(248,248,255);
+	textAlign(LEFT, BOTTOM);
+	textSize(min(map(this.sz,30,140,12,30),30));
+	text(this.desc, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) - min(map(this.sz,30,120,10,30),30));
+	textSize(min(map(this.sz,30,140,8,18),18));
+	text(this.creation, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) - min(map(this.sz,30,120,5,10),10));
+	textAlign(LEFT, TOP);
+	fill(128,128,136);
+	text(this.l, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) + min(map(this.sz,30,120,3,8),8));
     pop();
   }
   
