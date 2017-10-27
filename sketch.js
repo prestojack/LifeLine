@@ -1,3 +1,5 @@
+var canvasWidth = 960;
+var canvasHeight = 500;
 var transMax = 0;
 var parts = [];
 var eventBoxes = [];
@@ -8,7 +10,8 @@ var targetY = 0;
 var curIndex = 0;
 
 function setup() { 
-  createCanvas(780, 520);
+  main_canvas = createCanvas(canvasWidth, canvasHeight);
+  main_canvas.parent('canvasContainer');
   
   ellipseMode(CENTER);
   rectMode(CENTER);
