@@ -162,7 +162,7 @@ function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
     if (this.interact()) {
 		if (!this.hovered) {
       	  this.hovered = true;
-	      for (var h = 0; h < 25; h++) {
+	      for (var h = 0; h < 8; h++) {
 	        //append(parts, new Particle(ex, ey, random(5,13), random(2,13), color(255,213,12)));
 	        append(parts, new Particle(this.x, this.y, random(5,16), random(2,16), color(225,153,0)));
 	      }
