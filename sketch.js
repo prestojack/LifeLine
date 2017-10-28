@@ -104,11 +104,20 @@ function draw() {
 function mousePressed() {
   for (var i = 0; i < eventBoxes.length; i++) {
     if (eventBoxes[i].hovered) {
-		curIndex = (curIndex+1)%(eventBoxes.length);
-		if (curIndex != 0) {
-			targetIndex = curIndex - 1;
+		if (i == curIndex) {
+			curIndex = (curIndex+1)%(eventBoxes.length);
+			if (curIndex != 0) {
+				targetIndex = curIndex - 1;
+			} else {
+				targetIndex = eventBoxes.length-1;
+			}
 		} else {
-			targetIndex = eventBoxes.length-1;
+			curIndex = (i+1)%(eventBoxes.length);
+			if (curIndex != 0) {
+				targetIndex = curIndex - 1;
+			} else {
+				targetIndex = eventBoxes.length-1;
+			}
 		}
       targetX = eventBoxes[(i+1)%(eventBoxes.length)].x - width/2.0;
       targetY = eventBoxes[(i+1)%(eventBoxes.length)].y - height/2.0;
