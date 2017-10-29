@@ -86,7 +86,7 @@ function createEvents() {
 
   for (var j = 0; j < numEvents; j++) {
     for (var h = 0; h < numEvents; h++) {
-    	if(dist(eventBoxes[j].x, eventBoxes[j].y, eventBoxes[h].x, eventBoxes[h].y) < 220 && h != j) {
+    	if(dist(eventBoxes[j].x, eventBoxes[j].y, eventBoxes[h].x, eventBoxes[h].y) < 300 && h != j) {
     		eventBoxes[j].x = random(-width*2,width*2);
     		eventBoxes[j].y = random(-height*2,height*2);
     		h = 0;
@@ -190,7 +190,7 @@ function mousePressed() {
 }
 
 function LifeEventBox (numLikes, xpos, ypos, datetime, description, location, status) {
-  this.sz = map(min(numLikes,200), 0, 200, 60, 240);
+  this.sz = map(min(numLikes,200), 0, 200, 90, 240);
   this.textBox = this.sz;
   this.initSz = this.sz;
   this.x = xpos;
