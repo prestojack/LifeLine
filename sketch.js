@@ -11,6 +11,7 @@ var curIndex = 0;
 var targetIndex = 1;
 var interacting = false;
 var fbImg;
+var eventData = [];
 
 function setup() { 
   main_canvas = createCanvas(window.innerWidth, window.innerHeight);
@@ -22,6 +23,8 @@ function setup() {
 
 	fbImg = loadImage("facebookThumb.png");
 
+	dataSetup();
+
   createEvents();
   
   targetX = eventBoxes[0].x - width/2.0;
@@ -29,10 +32,66 @@ function setup() {
   
 } 
 
+function dataSetup() {
+	for (var i = 0; i < 8; i++) {
+		eventData[i] = [];
+	}
+	//event 1
+	append(eventData[0], "14/10/2011");
+	append(eventData[0], "October the Thirteenth");
+	append(eventData[0], "Mount Maunganui");
+	append(eventData[0], "Attended");
+	//event 2
+	append(eventData[1], "22/12/2012");
+	append(eventData[1], "Camping with the science homies");
+	append(eventData[1], "Mount Maunganui");
+	append(eventData[1], "Attended");
+	//event 3
+	append(eventData[2], "11/05/2013");
+	append(eventData[2], "Mafia Party");
+	append(eventData[2], "138 Gloucester Road (My house) :D");
+	append(eventData[2], "Attended");
+	//event 4
+	append(eventData[3], "21/12/2012");
+	append(eventData[3], "The Hobbit, Rialto Fundraiser");
+	append(eventData[3], "Rialto Tauranga Cinemas");
+	append(eventData[3], "Declined");
+	//event 5
+	append(eventData[4], "11/11/2015");
+	append(eventData[4], "MATH161 EXAM");
+	append(eventData[4], "MCLT103 (for me. check the first post for you)");
+	append(eventData[4], "No Reply");
+	//event 6
+	append(eventData[5], "12/03/2017");
+	append(eventData[5], "21");
+	append(eventData[5], "The Fat Angel");
+	append(eventData[5], "No Reply");
+	//event 7
+	append(eventData[6], "28/05/2016");
+	append(eventData[6], "strawberry fare is closing on the 29th and i am sad");
+	append(eventData[6], "Strawberry Fare");
+	append(eventData[6], "Attended");
+	//event 8
+	append(eventData[7], "12/09/2013");
+	append(eventData[7], "The Taming of the Shrew");
+	append(eventData[7], "Detour Theatre");
+	append(eventData[7], "Attended");
+}
+
 function createEvents() {
-  var numEvents = Math.floor(random(2,12));
+  var numEvents = 8;
   for (var i = 0; i < numEvents; i++) {
-    append(eventBoxes, new LifeEventBox(random(0,300), random(-width*2,width*2), random(-height*2,height*2), "10/12/1998", "Born"));
+    append(eventBoxes, new LifeEventBox(random(50,300), random(-width*2,width*2), random(-height*2,height*2), eventData[i][0], eventData[i][1], eventData[i][2], eventData[i][3]));
+  }
+
+  for (var j = 0; j < numEvents; j++) {
+    for (var h = 0; h < numEvents; h++) {
+    	if(dist(eventBoxes[j].x, eventBoxes[j].y, eventBoxes[h].x, eventBoxes[h].y) < 220 && h != j) {
+    		eventBoxes[j].x = random(-width*2,width*2);
+    		eventBoxes[j].y = random(-height*2,height*2);
+    		h = 0;
+    	} 
+  	}
   }
 }
 
@@ -130,14 +189,16 @@ function mousePressed() {
   }
 }
 
-function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
-  this.sz = map(min(numLikes,200), 0, 200, 60, 200);
-  this.l = Math.floor(numLikes) + " likes";
+function LifeEventBox (numLikes, xpos, ypos, datetime, description, location, status) {
+  this.sz = map(min(numLikes,200), 0, 200, 60, 240);
+  this.textBox = this.sz;
   this.initSz = this.sz;
   this.x = xpos;
   this.y = ypos;
   this.creation = datetime;
   this.desc = description;
+  this.loc = location;
+  this.stat = status.toUpperCase();
   this.hovered = false;
   this.ang = 0;
   this.ang2 = 0;
@@ -152,7 +213,7 @@ function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
     noStroke();
     
     if (this.hovered) {
-      fill(225,173,12);
+     	fill(225,173,12);
     } else {
     	fill(112,201,255);
     }
@@ -164,18 +225,33 @@ function LifeEventBox (numLikes, xpos, ypos, datetime, description) {
     rect(0,0, this.sz, this.sz,5);
 	pop();
     fill(248,248,255);
-	textAlign(LEFT, BOTTOM);
-	textSize(min(map(this.sz,30,140,12,30),30));
-	text(this.desc, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) - min(map(this.sz,30,120,10,30),30));
-	textSize(min(map(this.sz,30,140,8,18),18));
-	text(this.creation, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) - min(map(this.sz,30,120,5,10),10));
+    rectMode(CORNER);
+	textAlign(LEFT, TOP);
+	var newTxt = min(map(this.sz,30,140,12,30),30);
+	textSize(map(this.desc.length, 5, 42, newTxt, max(newTxt-6, 12)));
+	text(this.desc, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) + min(map(this.sz,30,120,10,30),30) + 40, this.textBox - 10, 200);
+	var curTxtSz = min(map(this.sz,30,140,8,18),18);
+	textSize(curTxtSz);
+	fill(180,180,188);
+	text(this.creation, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) + min(map(this.sz,30,120,5,10),10) + 35, this.textBox - 10, 200);
 	textAlign(LEFT, TOP);
     if (this.hovered) {
-      fill(112,201,255);
+    	fill(112,201,255);
     } else {
 		fill(225,173,12);
     }
-	text(this.l, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) + min(map(this.sz,30,120,3,8),8));
+    textSize(map(this.loc.length, 5, 42, curTxtSz, 10));
+	text(this.loc, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) + min(map(this.sz,30,120,3,8),8), this.textBox-10, 200);
+	textAlign(LEFT, BOTTOM);
+	if(this.hovered) {
+		textSize(min(map(this.sz,30,140,11,20),20))
+		if (this.stat == "ATTENDED") {
+			fill(255);
+		} else {
+			fill(145,93,0);
+		}
+		text(this.stat, -this.sz/2.0+min(map(this.sz,30,120,5,10),10), (this.sz/2.0) - min(map(this.sz,30,120,5,10),10))
+	}
     pop();
   }
   
